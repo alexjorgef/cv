@@ -3,79 +3,79 @@ name: build
 on:
   pull_request:
     branches:
-      - main
+    - main
   push:
     branches:
-      - main
-  workflow_dispatch:
+    - main
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container: ljmf00/archlinux
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-      - name: Checkout data 🔽
-        uses: actions/checkout@v3
-        with:
-          repository: alexjorgef/cv-data
-          token: ${{ secrets.DATA_GITHUB_TOKEN }}
-          path: cv-data
-      - name: Inject data 🔨
-        run: cp -rp cv-data/* .
-      - name: Install dependencies
-        run: |
-          pacman -Syy --needed --noconfirm --noprogressbar \
-            texlive-bin texlive-core texlive-latexextra texlive-fontsextra
-      - name: Build Curriculum Vitae 🔨
-        run: xelatex cv.tex
-      - name: Build Résumé 🔨
-        run: xelatex resume.tex
-      - name: Upload cv artifact
-        uses: actions/upload-artifact@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          name: cv
-          path: cv.pdf
-          if-no-files-found: error
-      - name: Upload résumé artifact
-        uses: actions/upload-artifact@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          name: resume
-          path: resume.pdf
-          if-no-files-found: error
+    - name: Checkout
+      uses: actions/checkout@v3.0.1
+      with:
+        submodules: recursive
+    - name: Checkout data 🔽
+      uses: actions/checkout@v3.0.1
+      with:
+        repository: alexjorgef/cv-data
+        token: ${{ secrets.DATA_GITHUB_TOKEN }}
+        path: cv-data
+    - name: Inject data 🔨
+      run: cp -rp cv-data/* .
+    - name: Install dependencies
+      run: |
+        pacman -Syy --needed --noconfirm --noprogressbar \
+          texlive-bin texlive-core texlive-latexextra texlive-fontsextra
+    - name: Build Curriculum Vitae 🔨
+      run: xelatex cv.tex
+    - name: Build Résumé 🔨
+      run: xelatex resume.tex
+    - name: Upload cv artifact
+      uses: actions/upload-artifact@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        name: cv
+        path: cv.pdf
+        if-no-files-found: error
+    - name: Upload résumé artifact
+      uses: actions/upload-artifact@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        name: resume
+        path: resume.pdf
+        if-no-files-found: error
   deploy:
     needs: build
     if: success() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Download cv artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: cv
-          path: cv
-      - name: Download résumé artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: resume
-          path: cv
-      - name: Upload and pin to Web3-Storage 🚀
-        uses: web3-storage/add-to-web3@77b645f58a5ec593d5ab23666fee1537331b7858
-        id: web3storage
-        with:
-          web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
-          path_to_add: cv
-          wrap_with_directory: false
-      - name: Deploy _dnslink to Cloudflare 🚀
-        run: |
-          curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
-            -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
-            -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
-            -H "Content-Type: application/json" \
-            --data '{"type":"TXT","name":"_dnslink.cv.alexjorgef.com","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
+    - name: Checkout
+      uses: actions/checkout@v3.0.1
+    - name: Download cv artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: cv
+        path: cv
+    - name: Download résumé artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: resume
+        path: cv
+    - name: Upload and pin to Web3-Storage 🚀
+      uses: web3-storage/add-to-web3@77b645f58a5ec593d5ab23666fee1537331b7858
+      id: web3storage
+      with:
+        web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
+        path_to_add: cv
+        wrap_with_directory: false
+    - name: Deploy _dnslink to Cloudflare 🚀
+      run: |
+        curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
+          -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
+          -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
+          -H "Content-Type: application/json" \
+          --data '{"type":"TXT","name":"_dnslink.cv.alexjorgef.com","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
