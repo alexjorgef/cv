@@ -3,17 +3,17 @@ name: checks
 on:
   pull_request:
     branches:
-      - main
+    - main
   push:
     branches:
-      - main
-  workflow_dispatch:
+    - main
+  workflow_dispatch: {}
 
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-      - uses: pre-commit/action@v2.0.3
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - uses: pre-commit/action@v2.0.3
