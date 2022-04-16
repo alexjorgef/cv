@@ -31,9 +31,9 @@ jobs:
         pacman -Syy --needed --noconfirm --noprogressbar \
           texlive-bin texlive-core texlive-latexextra texlive-fontsextra
     - name: Build Curriculum Vitae 🔨
-      run: xelatex cv.tex
+      run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Build Résumé 🔨
-      run: xelatex resume.tex
+      run: SOURCE_DATE_EPOCH=1 xelatex resume.tex
     - name: Upload cv artifact
       uses: actions/upload-artifact@v3
       if: github.ref == 'refs/heads/main'
