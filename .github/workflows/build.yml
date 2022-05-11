@@ -66,7 +66,7 @@ jobs:
         name: resume
         path: cv
     - name: Upload and pin to Web3-Storage 🚀
-      uses: web3-storage/add-to-web3@77b645f58a5ec593d5ab23666fee1537331b7858
+      uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
       id: web3storage
       with:
         web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
