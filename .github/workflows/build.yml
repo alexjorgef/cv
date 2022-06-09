@@ -15,11 +15,11 @@ jobs:
     container: ljmf00/archlinux
     steps:
     - name: Checkout
-      uses: actions/checkout@v3.0.2
+      uses: actions/checkout@v3
       with:
         submodules: recursive
     - name: Checkout data 🔽
-      uses: actions/checkout@v3.0.2
+      uses: actions/checkout@v3
       with:
         repository: alexjorgef/cv-data
         token: ${{ secrets.DATA_GITHUB_TOKEN }}
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3.0.2
+      uses: actions/checkout@v3
     - name: Download cv artifact
       uses: actions/download-artifact@v3
       with:
