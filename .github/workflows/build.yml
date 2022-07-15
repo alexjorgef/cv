@@ -77,7 +77,6 @@ jobs:
         path_to_add: cv/resume.pdf
         wrap_with_directory: false
     - name: Upload cv to Google Drive
-      if: steps.cv-cache.outputs.cache-hit == 'true'
       uses: adityak74/google-drive-upload-git-action@main
       with:
         credentials: ${{ secrets.GDRIVE_API_KEY }}
