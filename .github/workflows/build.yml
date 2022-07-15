@@ -34,13 +34,14 @@ jobs:
       run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Build Résumé 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex resume.tex
-    - name: Upload cv artifact
-      uses: actions/upload-artifact@v3
-      if: github.ref == 'refs/heads/main'
+    - uses: actions/cache@v3
+      id: cv-cache
       with:
-        name: cv
-        path: cv.pdf
-        if-no-files-found: error
+        path: |
+          cv.pdf
+        key: ${{ runner.os }}-cv-${{ hashFiles('**/cv.pdf') }}
+        restore-keys: |
+          ${{ runner.os }}-cv-
     - name: Upload résumé artifact
       uses: actions/upload-artifact@v3
       if: github.ref == 'refs/heads/main'
@@ -55,23 +56,34 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Download cv artifact
-      uses: actions/download-artifact@v3
+    - uses: actions/cache@v3
+      id: cv-cache
       with:
-        name: cv
-        path: cv
+        path: |
+          cv.pdf
+        key: ${{ runner.os }}-cv-${{ hashFiles('**/cv.pdf') }}
+        restore-keys: |
+          ${{ runner.os }}-cv-
     - name: Download résumé artifact
       uses: actions/download-artifact@v3
       with:
         name: resume
         path: cv
-    - name: Upload and pin to Web3-Storage 🚀
+    - name: Upload and pin résumé to Web3 Storage 🚀
       uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
       id: web3storage
       with:
         web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
-        path_to_add: cv
+        path_to_add: cv/resume.pdf
         wrap_with_directory: false
+    - name: Upload cv to Google Drive
+      if: steps.cv-cache.outputs.cache-hit == 'true'
+      uses: adityak74/google-drive-upload-git-action@main
+      with:
+        credentials: ${{ secrets.GDRIVE_API_KEY }}
+        filename: cv.pdf
+        folderId: ${{ secrets.GDRIVE_FOLDERID }}
+        overwrite: true
     - name: Deploy _dnslink to Cloudflare 🚀
       run: |
         curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
