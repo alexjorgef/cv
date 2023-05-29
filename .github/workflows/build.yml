@@ -55,17 +55,17 @@ jobs:
       url: ${{ steps.ghpages-deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
         name: cv-artifacts
         path: cv-output
-    - name: Setup Pages
-      uses: actions/configure-pages@v3
-    - name: Checkout
-      uses: actions/checkout@v3
     - name: Copy landing page files
       run: cp index.html logo.png cv-output/
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
