@@ -62,6 +62,8 @@ jobs:
         path: cv-output
     - name: Setup Pages
       uses: actions/configure-pages@v3
+    - name: Checkout
+      uses: actions/checkout@v3
     - name: Copy landing page files
       run: cp index.html logo.png cv-output/
     - name: Upload artifact
