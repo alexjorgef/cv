@@ -36,14 +36,6 @@ jobs:
       run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Build Résumé 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex resume.tex
-    - uses: actions/cache@v3
-      id: cv-cache
-      with:
-        path: |
-          cv.pdf
-        key: ${{ runner.os }}-cv-${{ hashFiles('**/cv.pdf') }}
-        restore-keys: |
-          ${{ runner.os }}-cv-
     - name: Upload résumé artifact
       uses: actions/upload-artifact@v3
       if: github.ref == 'refs/heads/main'
@@ -58,14 +50,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - uses: actions/cache@v3
-      id: cv-cache
-      with:
-        path: |
-          cv.pdf
-        key: ${{ runner.os }}-cv-${{ hashFiles('**/cv.pdf') }}
-        restore-keys: |
-          ${{ runner.os }}-cv-
     - name: Download résumé artifact
       uses: actions/download-artifact@v3
       with:
