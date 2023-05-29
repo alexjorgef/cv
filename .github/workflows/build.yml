@@ -47,6 +47,9 @@ jobs:
   deploy:
     needs: build
     if: success() && github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
     - name: Download artifacts
