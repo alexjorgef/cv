@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ljmf00/archlinux
+    container: ljmf00/archlinux:devel
     steps:
     - name: Checkout
       uses: actions/checkout@v3
