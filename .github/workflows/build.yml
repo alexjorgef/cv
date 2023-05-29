@@ -30,8 +30,7 @@ jobs:
       run: cp -rp cv-data/production/* .
     - name: Install dependencies
       run: |
-        pacman -Syy --needed --noconfirm --noprogressbar \
-          texlive-bin texlive-core texlive-latexextra texlive-fontsextra
+        pacman -Syy --needed --noconfirm --noprogressbar texlive-most
     - name: Build Curriculum Vitae 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Build Résumé 🔨
