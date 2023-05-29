@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://alexjorgef.com/"><img src="https://gateway.pinata.cloud/ipfs/QmUQFG2KcNY6s7h1CaTM79pz5VKzzF23397MzMwvLWZnZB" alt="logo" width="250" /></a>
+  <a href="https://alexjorgef.com/"><img src="logo.png" alt="logo" width="250" /></a>
 </div>
 
 ---

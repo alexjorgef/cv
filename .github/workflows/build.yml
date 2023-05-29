@@ -50,6 +50,9 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.ghpages-deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
     - name: Download artifacts
@@ -59,20 +62,21 @@ jobs:
         path: cv-output
     - name: Setup Pages
       uses: actions/configure-pages@v3
-    - name: Generate CNAME file
-      run: echo "$DNS_CNAME" > cv-output/CNAME
+    - name: Copy landing page files
+      run: cp index.html logo.png cv-output/
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
         path: cv-output
     - name: Deploy to GitHub Pages
+      id: ghpages-deployment
       uses: actions/deploy-pages@v2
-    - name: Upload and pin résumé to Web3 Storage 🚀
+    - name: Upload and pin to Web3 Storage 🚀
       uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
       id: web3storage
       with:
         web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
-        path_to_add: cv-output/cv.pdf
+        path_to_add: cv-output
         wrap_with_directory: false
     - name: Deploy _dnslink to Cloudflare 🚀
       run: |
