@@ -35,7 +35,7 @@ jobs:
       run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Build Résumé 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex resume.tex
-    - name: Upload résumé artifact
+    - name: Upload artifacts
       uses: actions/upload-artifact@v3
       if: github.ref == 'refs/heads/main'
       with:
@@ -49,13 +49,21 @@ jobs:
     if: success() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Download résumé artifact
+    - name: Download artifacts
       uses: actions/download-artifact@v3
       with:
         name: cv-artifacts
         path: cv-output
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    - name: Generate CNAME file
+      run: echo "$DNS_CNAME" > cv-output/CNAME
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        path: cv-output
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v2
     - name: Upload and pin résumé to Web3 Storage 🚀
       uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
       id: web3storage
@@ -69,4 +77,4 @@ jobs:
           -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
           -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
           -H "Content-Type: application/json" \
-          --data '{"type":"TXT","name":"_dnslink.cv.alexjorgef.com","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
+          --data '{"type":"TXT","name":"_dnslink.$DNS_CNAME","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
