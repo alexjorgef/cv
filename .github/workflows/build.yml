@@ -39,8 +39,10 @@ jobs:
       uses: actions/upload-artifact@v3
       if: github.ref == 'refs/heads/main'
       with:
-        name: resume
-        path: resume.pdf
+        name: cv-artifacts
+        path: |
+          cv.pdf
+          resume.pdf
         if-no-files-found: error
   deploy:
     needs: build
@@ -52,22 +54,15 @@ jobs:
     - name: Download résumé artifact
       uses: actions/download-artifact@v3
       with:
-        name: resume
-        path: cv
+        name: cv-artifacts
+        path: cv-output
     - name: Upload and pin résumé to Web3 Storage 🚀
       uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
       id: web3storage
       with:
         web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
-        path_to_add: cv/resume.pdf
+        path_to_add: cv-output/cv.pdf
         wrap_with_directory: false
-    - name: Upload cv to Google Drive
-      uses: adityak74/google-drive-upload-git-action@main
-      with:
-        credentials: ${{ secrets.GDRIVE_API_KEY }}
-        filename: cv.pdf
-        folderId: ${{ secrets.GDRIVE_FOLDERID }}
-        overwrite: true
     - name: Deploy _dnslink to Cloudflare 🚀
       run: |
         curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
