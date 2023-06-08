@@ -8,7 +8,7 @@
 
 ### Installation
 
-* for **Arch Linux**, the TeX Live distribution is recommended ([Install with `texlive` pacman group](https://archlinux.org/groups/x86_64/texlive/))
+* for **Arch Linux**, the [TeX Live](https://wiki.archlinux.org/title/TeX_Live) distribution is recommended ([Install with `texlive` pacman group](https://archlinux.org/groups/x86_64/texlive/))
 
 ---
 
