@@ -74,7 +74,7 @@ jobs:
       id: ghpages-deployment
       uses: actions/deploy-pages@v2
     - name: Upload and pin to Web3 Storage 🚀
-      uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
+      uses: web3-storage/add-to-web3@e00097bb8a9ac7769ab801d6c7cb11f00f8121f3
       id: web3storage
       with:
         web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
