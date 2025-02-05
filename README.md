@@ -4,7 +4,7 @@
 
 ## Dependencies
 
-* A XeTeX engine
+* [XeTeX engine](https://xetex.sourceforge.net/)
 
 ---
 
