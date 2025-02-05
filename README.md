@@ -4,12 +4,8 @@
 
 ## Dependencies
 
-* A TeX engine, compatible with LaTeX packages
-
-### Installation
-
-* for **Arch Linux**, the [TeX Live](https://wiki.archlinux.org/title/TeX_Live) distribution is recommended ([Install with `texlive` pacman group](https://archlinux.org/groups/x86_64/texlive/))
+* A XeTeX engine
 
 ---
 
-Source code of my curriculum vitae & résumé, based on [Byungjin Park](https://github.com/posquit0)'s [**Awesome-CV**](https://github.com/posquit0/Awesome-CV) template and inspired by [Luís Ferreira](https://github.com/ljmf00)'s [**cv**](https://github.com/ljmf00/cv) repository.
+Source code based on [Byungjin Park](https://github.com/posquit0)'s [**Awesome-CV**](https://github.com/posquit0/Awesome-CV) template and inspired by [Luís Ferreira](https://github.com/ljmf00)'s [**cv**](https://github.com/ljmf00/cv) repository.
