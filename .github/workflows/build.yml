@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         apt-get update
-        apt-get install -y --no-install-recommends git texlive-base texlive-xetex texlive-fonts-extra texlive-fonts-recommended texlive-font-utils texlive-latex-base texlive-latex-extra texlive-latex-recommended
+        apt-get install -y --no-install-recommends ca-certificates git texlive-base texlive-xetex texlive-fonts-extra texlive-fonts-recommended texlive-font-utils texlive-latex-base texlive-latex-extra texlive-latex-recommended
     - name: Checkout
       uses: actions/checkout@v4
       with:
