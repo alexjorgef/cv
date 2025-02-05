@@ -17,11 +17,11 @@ jobs:
     container: ljmf00/archlinux:devel
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: recursive
-    - name: Checkout data 🔽
-      uses: actions/checkout@v3
+    - name: Checkout private data 🔽
+      uses: actions/checkout@v4
       with:
         repository: alexjorgef/cv-data
         token: ${{ secrets.DATA_GITHUB_TOKEN }}
@@ -36,7 +36,7 @@ jobs:
     - name: Build Résumé 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex resume.tex
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: github.ref == 'refs/heads/main'
       with:
         name: cv-artifacts
@@ -56,9 +56,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Download artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: cv-artifacts
         path: cv-output
