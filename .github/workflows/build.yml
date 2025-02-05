@@ -67,12 +67,12 @@ jobs:
     - name: Setup Pages
       uses: actions/configure-pages@v3
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v3
       with:
         path: cv-output
     - name: Deploy to GitHub Pages
       id: ghpages-deployment
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v4
     - name: Upload and pin to Web3 Storage 🚀
       uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
       id: web3storage
