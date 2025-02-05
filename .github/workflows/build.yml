@@ -14,7 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ljmf00/archlinux:devel
+    # container: ljmf00/archlinux:devel
+    container: ubuntu:24.04
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -28,9 +29,13 @@ jobs:
         path: cv-data
     - name: Inject data 🔨
       run: cp -rp cv-data/production/* .
+    # - name: Install dependencies
+    #   run: |
+    #     pacman -Syy --needed --noconfirm --noprogressbar texlive-basic texlive-xetex texlive-fontsextra texlive-fontsrecommended texlive-fontutils texlive-latex texlive-latexextra texlive-latexrecommended
     - name: Install dependencies
       run: |
-        pacman -Syy --needed --noconfirm --noprogressbar texlive-basic texlive-xetex texlive-fontsextra texlive-fontsrecommended texlive-fontutils texlive-latex texlive-latexextra texlive-latexrecommended
+        apt-get update
+        apt-get install -y --no-install-recommends texlive-base texlive-xetex texlive-fonts-extra texlive-fonts-recommended texlive-font-utils texlive-latex-base texlive-latex-extra texlive-latex-recommended
     - name: Build Curriculum Vitae 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Build Résumé 🔨
@@ -73,17 +78,17 @@ jobs:
     - name: Deploy to GitHub Pages
       id: ghpages-deployment
       uses: actions/deploy-pages@v4
-    - name: Upload and pin to Web3 Storage 🚀
-      uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
-      id: web3storage
-      with:
-        web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
-        path_to_add: cv-output
-        wrap_with_directory: false
-    - name: Deploy _dnslink to Cloudflare 🚀
-      run: |
-        curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
-          -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
-          -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
-          -H "Content-Type: application/json" \
-          --data '{"type":"TXT","name":"_dnslink.${{ vars.DNS_CNAME }}","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
+    # - name: Upload and pin to Web3 Storage 🚀
+    #   uses: web3-storage/add-to-web3@59774ff5ca3e7fd57fbd25ad62557a408a6122fc
+    #   id: web3storage
+    #   with:
+    #     web3_token: ${{ secrets.WEB3STORAGE_TOKEN }}
+    #     path_to_add: cv-output
+    #     wrap_with_directory: false
+    # - name: Deploy _dnslink to Cloudflare 🚀
+    #   run: |
+    #     curl -X PUT "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE }}/dns_records/${{ secrets.CLOUDFLARE_RECORD }}" \
+    #       -H "X-Auth-Email: ${{ secrets.CLOUDFLARE_XAUTH_EMAIL }}" \
+    #       -H "X-Auth-Key: ${{ secrets.CLOUDFLARE_XAUTH_KEY }}" \
+    #       -H "Content-Type: application/json" \
+    #       --data '{"type":"TXT","name":"_dnslink.${{ vars.DNS_CNAME }}","content":"dnslink=/ipfs/${{ steps.web3storage.outputs.cid }}","ttl":1}' > /dev/null 2>&1
