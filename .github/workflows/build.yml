@@ -123,7 +123,7 @@ jobs:
           path: cv-output
 
       - name: Upload and pin to Web3-Storage 🚀
-        uses: storacha/add-to-web3@v4
+        uses: storacha/add-to-web3@v3
         id: storacha
         with:
           path_to_add: 'cv-output'
