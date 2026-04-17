@@ -32,10 +32,12 @@ jobs:
         path: cv-data
     - name: Inject data
       run: cp -rp cv-data/production/* .
+    - name: Check data
+      run: ls -la ./
+    - name: Test build
+      run: SOURCE_DATE_EPOCH=1 xelatex cv.tex
     - name: Compile
       run: make
-    - name: Check data
-      run: ls -la
 
   # build:
   #   runs-on: ubuntu-latest
