@@ -12,6 +12,26 @@ on:
   workflow_dispatch: {}
 
 jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    - name: Install fonts
+      run: |
+        apt update
+        apt install --yes \
+          fonts-roboto \
+          fonts-adobe-sourcesans3 \
+          ;
+    - name: Compile
+      run: make
+    - name: Check data
+      run: ls -la
+
   build:
     runs-on: ubuntu-latest
     # container: ljmf00/archlinux:devel
