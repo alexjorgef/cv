@@ -1,6 +1,7 @@
 name: build
 
 on:
+
   pull_request:
     branches:
     - main
@@ -15,18 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     container: texlive/texlive:latest
     steps:
+
     - name: Install fonts
       run: |
         apt update
         apt install -y --no-install-recommends fonts-roboto fonts-adobe-sourcesans3
 
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Checkout 🔽
+      uses: actions/checkout@v6
       with:
         submodules: recursive
 
     - name: Checkout private data 🔽
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: alexjorgef/cv-data
         token: ${{ secrets.DATA_GITHUB_TOKEN }}
@@ -41,8 +43,8 @@ jobs:
     - name: Build Résumé 🔨
       run: SOURCE_DATE_EPOCH=1 xelatex resume.tex
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
+    - name: Upload artifacts 🔼
+      uses: actions/upload-artifact@v7
       if: github.ref == 'refs/heads/main'
       with:
         name: cv-artifacts
@@ -62,26 +64,27 @@ jobs:
       url: ${{ steps.ghpages-deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
 
-    - name: Download artifacts
-      uses: actions/download-artifact@v4
+    - name: Checkout 🔽
+      uses: actions/checkout@v6
+
+    - name: Download artifacts 🔽
+      uses: actions/download-artifact@v8
       with:
         name: cv-artifacts
         path: cv-output
 
-    - name: Copy landing page files
+    - name: Copy landing page files 🔨
       run: cp index.html robots.txt logo.png favicon.ico cv-output/
 
     - name: Setup Pages
-      uses: actions/configure-pages@v5
+      uses: actions/configure-pages@v6
 
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
+    - name: Upload artifact 🔼
+      uses: actions/upload-pages-artifact@v5
       with:
         path: cv-output
 
-    - name: Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages 🚀
       id: ghpages-deployment
-      uses: actions/deploy-pages@v4
+      uses: actions/deploy-pages@v5
